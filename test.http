@@ -1,0 +1,11 @@
+POST http://localhost:4000/devices HTTP/1.1
+content-type: application/json
+
+{
+    "id": "THS-1754",
+    "roomName": "Кухня"
+}
+
+###
+DELETE  http://localhost:4000/devices?id=THS-011 HTTP/1.1
+content-type: application/json

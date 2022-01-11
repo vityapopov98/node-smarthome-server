@@ -1,0 +1,7 @@
+required modules:
+1. Express
+npm install express
+2. Aedes
+npm install aedes
+3. http
+4. websocket-stream
