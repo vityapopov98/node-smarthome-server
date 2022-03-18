@@ -79,6 +79,38 @@ function addDevice(deviceId){
             icon: ''
         }
     }
+    else if(deviceId.indexOf('GTS') != -1){
+        return {
+            id: deviceId,
+            name: `Device ${deviceId}`,
+            type: "GTS",
+            position: ''
+        }
+    }
+    else if(deviceId.indexOf('ELC') != -1){
+        return {
+            id: deviceId,
+            name: `Device ${deviceId}`,
+            type: "ELC",
+            count: ''
+        }
+    }
+    else if(deviceId.indexOf('WAC') != -1){
+        return {
+            id: deviceId,
+            name: `Device ${deviceId}`,
+            type: "WAC",
+            count: ''
+        }
+    }
+    else if(deviceId.indexOf('IMC') != -1){
+        return {
+            id: deviceId,
+            name: `Device ${deviceId}`,
+            type: "IRC",
+            count: ''
+        }
+    }
 }
 
 export {

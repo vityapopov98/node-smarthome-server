@@ -1,1 +1,81 @@
-{"users":[{"name":"Ivan Ivanov (Father)","role":"admin","login":"","password":""},{"name":"Svetlana Ivanova (Mother)","role":"user","login":"","password":""}],"home":{"id":"home20034","name":"Мой дом","address":"ул. Центральная 27","rooms":[{"name":"Двор","devices":[]},{"name":"Кухня","devices":[{"id":"THS-6548","name":"Термостат","wishTemperature":20,"type":"THS","icon":"icon/termostat.png"},{"id":"IPC-1159","name":"Device IPC-1159","type":"IPC","viewFromCamera":"","icon":""},{"id":"THS-1754","name":"Термостат","wishTemperature":20,"type":"THS","icon":"icon/termostat.png"}]},{"name":"Спальня","devices":[]}]}}
+{
+  "users": [
+    {
+      "name": "Ivan Ivanov (Father)",
+      "role": "admin",
+      "login": "",
+      "password": ""
+    },
+    {
+      "name": "Svetlana Ivanova (Mother)",
+      "role": "user",
+      "login": "",
+      "password": ""
+    }
+  ],
+  "home": {
+    "id": "home20034",
+    "name": "Мой дом",
+    "address": "ул. Центральная 27",
+    "rooms": [
+      { "name": "Двор", "devices": [] },
+      {
+        "name": "Кухня",
+        "devices": [
+          {
+            "id": "THS10001",
+            "name": "Термостат",
+            "wishTemperature": 20,
+            "type": "THS",
+            "icon": "icon/termostat.png"
+          },
+          {
+            "id": "IMC10001",
+            "name": "Device IMC10001",
+            "type": "IRC",
+            "count": ""
+          },
+          {
+            "id": "GTS10001",
+            "name": "Device GTS-1754",
+            "type": "GTS",
+            "position": ""
+          },
+          {
+            "id": "ELC10003",
+            "name": "Device ELC10003",
+            "type": "ELC",
+            "count": ""
+          },
+          {
+            "id": "WAC10002",
+            "name": "Device WAC10002",
+            "type": "WAC",
+            "count": ""
+          },
+          {
+            "id": "GTS-1754",
+            "name": "Device GTS-1754",
+            "type": "GTS",
+            "position": ""
+          },
+          {
+            "id": "THS-6548",
+            "name": "Термостат",
+            "wishTemperature": 20,
+            "type": "THS",
+            "icon": "icon/termostat.png"
+          },
+          {
+            "id": "IPC-1159",
+            "name": "Device IPC-1159",
+            "type": "IPC",
+            "viewFromCamera": "",
+            "icon": ""
+          }
+        ]
+      },
+      { "name": "Спальня", "devices": [] }
+    ]
+  }
+}

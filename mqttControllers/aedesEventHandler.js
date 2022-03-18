@@ -19,7 +19,6 @@ export default(aedes) =>{
             console.log(packet.payload.toString())
           }
           //-------- конец не нужного ------
-
       
         }
       })

@@ -12,6 +12,8 @@
   "dependencies": {
     "aedes": "^0.46.1",
     "express": "^4.17.1",
+    "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.2",
     "websocket-stream": "^5.5.2"
   }
 }
