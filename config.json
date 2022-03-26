@@ -18,9 +18,92 @@
     "name": "Мой дом",
     "address": "ул. Центральная 27",
     "rooms": [
-      { "name": "Двор", "devices": [] },
       {
+        "id": "house__123",
+        "floorName": "Двор",
+        "name": "Дом",
+        "actionButtons": [
+          {
+            "id": "house__123_1",
+            "name": "Свет",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "orange",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          },
+          {
+            "id": "house__123_2",
+            "name": "Свет",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "green",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          },
+          {
+            "id": "house__123_3",
+            "name": "Свет",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "blue",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          },
+          {
+            "id": "house__123_4",
+            "name": "red",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "orange",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          }
+        ],
+        "devices": []
+      },
+      {
+        "id": "kitchen__123",
+        "floorName": "1 Этаж",
         "name": "Кухня",
+        "actionButtons": [
+          {
+            "id": "kitchen__123_1",
+            "name": "Свет",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "orange",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          },
+          {
+            "id": "kitchen__123_2",
+            "name": "Свет",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "green",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          },
+          {
+            "id": "kitchen__123_3",
+            "name": "Свет",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "blue",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          },
+          {
+            "id": "kitchen__123_3",
+            "name": "red",
+            "icon": "icon_button_light_bulb_2x",
+            "color": "orange",
+            "deviceActionUrl": "",
+            "deviceActionDataOn": "",
+            "deviceActionDataOff": ""
+          }
+        ],
         "devices": [
           {
             "id": "THS10001",
@@ -75,7 +158,11 @@
           }
         ]
       },
-      { "name": "Спальня", "devices": [] }
+      {
+        "name": "Спальня",
+        "actionButtons": [],
+        "devices": []
+      }
     ]
   }
 }
