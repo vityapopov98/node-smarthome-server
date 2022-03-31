@@ -21,7 +21,7 @@ import {
 } from "../controllers/configControllers/users.js";
 
 import { sendVolgogradEnergoSbytCounter } from "../controllers/sendMail.js";
-
+import { database } from "../index.js";
 import { Buffer } from "buffer";
 
 export default (app, aedes) => {
@@ -105,6 +105,16 @@ export default (app, aedes) => {
     sendMQTTrequest().then((packet) => {
       console.log("express packet", packet);
       res.send("OK");
+    });
+  });
+
+  app.get("/db", (req, res) => {
+    database.find({ eindex: "thermostat" }, (err, docs) => {
+      if (err) {
+        console.log(err);
+        res.json({ status: "db error" });
+      }
+      res.json(docs);
     });
   });
 };

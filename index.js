@@ -49,8 +49,22 @@ ws.createServer(
   aedes.handle
 ); //запуск брокера
 
+// ---------MQTT Client (Bridge To Inet)--------
+import mqtt from "mqtt";
+const client = mqtt.connect({
+  host: "m5.wqtt.ru",
+  port: "4600",
+  username: "",
+  password: "",
+});
+
+//--------NeDB---------
+import Datastore from "nedb";
+export const database = new Datastore("database.db");
+database.loadDatabase();
+
 httpServer.listen(wsPort, "0.0.0.0", function () {
   console.log("websocket server listening on port", wsPort);
 });
 
-aedesEventHandler(aedes);
+aedesEventHandler(aedes, client);

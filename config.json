@@ -60,7 +60,14 @@
             "deviceActionDataOff": ""
           }
         ],
-        "devices": []
+        "devices": [
+          {
+            "id": "ULN10001",
+            "name": "Шлюз",
+            "type": "ULN",
+            "connectedDevices": "THS16001"
+          }
+        ]
       },
       {
         "id": "kitchen__123",
