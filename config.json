@@ -65,7 +65,7 @@
             "id": "ULN10001",
             "name": "Шлюз",
             "type": "ULN",
-            "connectedDevices": "THS16001"
+            "connectedDevices": ["THS16001", "ECO16001", "WAC10003", "ECO16001"]
           }
         ]
       },
@@ -112,6 +112,20 @@
           }
         ],
         "devices": [
+          {
+            "id": "THS16001",
+            "name": "Термостат",
+            "wishTemperature": 20,
+            "type": "THS",
+            "icon": "icon/termostat.png"
+          },
+          {
+            "id": "THS16001",
+            "name": "Термостат",
+            "wishTemperature": 20,
+            "type": "THS",
+            "icon": "icon/termostat.png"
+          },
           {
             "id": "THS10001",
             "name": "Термостат",
@@ -165,11 +179,7 @@
           }
         ]
       },
-      {
-        "name": "Спальня",
-        "actionButtons": [],
-        "devices": []
-      }
+      { "name": "Спальня", "actionButtons": [], "devices": [] }
     ]
   }
 }
