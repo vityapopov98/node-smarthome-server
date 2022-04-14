@@ -2,12 +2,14 @@ import { initRoomsObserver, observeRoomsState } from "./roomsMqttClients.js";
 import { saveDevicesData } from "./saveDevicesData.js";
 import { sendConnectedDevicesToHub } from "../devices/hub.js";
 import { ThermostatDemo } from "../devices/thermostatDemo.js";
+import { GatesDemo } from "../devices/gatesDemo.js";
 
 export default (aedes, client) => {
   console.log("Aedes is working");
   initRoomsObserver();
   const demoThermostat = new ThermostatDemo("THS16001", aedes);
   demoThermostat.loop();
+  const demoGates = new GatesDemo("GTS00000", aedes);
 
   //------ Соединение с интернет брокером ------
   client.on("connect", () => {
@@ -52,6 +54,7 @@ export default (aedes, client) => {
       //-------- по сути не нужно --------
       if (packet.payload.toString() != "") {
         demoThermostat.setState(packet.payload.toString());
+        demoGates.setState(packet.payload.toString());
         //если поле данных не пустое
         console.log(
           packet.topic,
@@ -102,6 +105,7 @@ export default (aedes, client) => {
       if (diveceId.substring(0, 3) === "ULN") {
         sendConnectedDevicesToHub(diveceId, aedes);
       }
+      demoGates.state();
 
       //Если приложение подписалось на термостат THS/state
       // if (subscriptions[0].topic.substring(0, 3) === "THS") {
