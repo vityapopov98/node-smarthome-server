@@ -1,4 +1,6 @@
+import fetch from "node-fetch";
 // REST API
+import { getAPI } from "./docapi.js";
 import { getConfig } from "../controllers/configControllers/config.js";
 import {
   deleteDevices,
@@ -18,11 +20,18 @@ import {
   getUsers,
   postUsers,
   putUsers,
+  auth,
 } from "../controllers/configControllers/users.js";
 
 import { sendVolgogradEnergoSbytCounter } from "../controllers/sendMail.js";
 import { database } from "../index.js";
 import { Buffer } from "buffer";
+
+import { saveToElastic } from "../mqttControllers/saveDevicesData.js";
+
+const sessions = [];
+
+export { sessions };
 
 export default (app, aedes) => {
   // app.use(verifyAccessToken)
@@ -36,12 +45,16 @@ export default (app, aedes) => {
     // }
   });
 
+  app.get("", (req, res) => {
+    req.json(getAPI);
+  });
   // ------------ Работа с Config -----------
   //------------------------------------------
   app.get("/config", getConfig);
 
   //Добавить пользователя в семейный доступ
   // то есть в объект users в конфиге
+  app.post("/auth", auth);
   app.get("/users", getUsers);
   app.post("/users", postUsers);
   app.put("/users", putUsers);
@@ -105,6 +118,71 @@ export default (app, aedes) => {
     sendMQTTrequest().then((packet) => {
       console.log("express packet", packet);
       res.send("OK");
+    });
+  });
+
+  /*
+  POST /sendToMqtt
+  {
+    topic: '',
+    payload: ''
+  }
+  */
+  app.get("/mqtt", (req, res) => {
+    console.log("mqtt", req);
+    fetch("http://opensearch-node1:9200/tind/_search")
+      .then((response) => {
+        // console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        res.json(data);
+      });
+  });
+  app.post("/sendToMqtt", (req, res) => {
+    console.log(" sendToMqtt route");
+    const sendMQTTrequest = () => {
+      return new Promise((resolve, reject) => {
+        aedes.publish({
+          cmd: "publish",
+          qos: 2,
+          topic: "test", //`${req.query?.deviceId}/setState`,
+          payload: Buffer.from(`${req.body?.payload}`),
+          retain: false,
+        });
+        console.log("send to topic", `${req.query?.deviceId}/setState`);
+        try {
+          console.log("send to topic try", `${req.query?.deviceId}/setState`);
+          saveToElastic(`${req.query?.deviceId}/setState`, {
+            data: req.body?.payload,
+          });
+        } catch (e) {
+          console.log("не получилось запустить функцию saveToElastic");
+        }
+        res.json({ status: "send to OpenSearch" });
+
+        // aedes.on("publish", function (packet, client) {
+        //   //Когда кто-то публикует данные в какой-то топик
+        //   if (client) {
+        //     console.log(`client publish ${packet.payload.toString()}`);
+        //     console.log(packet);
+
+        //     // Проверяем, что данные пришли от нужного устройства
+        //     if (packet.topic === `${req.query.deviceId}/state`) {
+        //       res.json({
+        //         status: "ok",
+        //         fromMqtt: `${packet.payload.toString()}`,
+        //       });
+        //     }
+        //   }
+        // });
+      });
+    };
+
+    sendMQTTrequest().then((packet) => {
+      console.log("express packet", packet);
+      res.json({ status: "ok sending done" });
     });
   });
 

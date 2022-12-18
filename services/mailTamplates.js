@@ -2,7 +2,7 @@ class EmptyLetter {
   constructor(letter) {
     //gimly99@mail.ru,
     // console.log('Letter constructor', letter)
-    this.from = '"Events App ✅ " <@gmail.com>'; // sender address
+    this.from = '"Smart Home App ✅ " <@gmail.com>'; // sender address
     this.to = "@yandex.ru"; // list of receivers
     this.subject = letter.subject; // Subject line
     this.text = letter.text; // plain text body

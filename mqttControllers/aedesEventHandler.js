@@ -1,5 +1,5 @@
 import { initRoomsObserver, observeRoomsState } from "./roomsMqttClients.js";
-import { saveDevicesData } from "./saveDevicesData.js";
+import { saveDevicesData, saveToElastic } from "./saveDevicesData.js";
 import { sendConnectedDevicesToHub } from "../devices/hub.js";
 
 export default (aedes, client) => {
@@ -40,10 +40,14 @@ export default (aedes, client) => {
   aedes.on("publish", function (packet, client) {
     //Когда кто-то публикует данные в какой-то топик
     if (client) {
-      // console.log(packet)
+      console.log(packet);
 
       observeRoomsState(packet.topic, packet.payload.toString());
       saveDevicesData(packet.topic, packet.payload.toString());
+      const e = saveToElastic(packet.topic, {
+        data: packet.payload.toString(),
+      });
+      console.log("возможная ошибка:", e);
       //-------- по сути не нужно --------
       if (packet.payload.toString() != "") {
         //если поле данных не пустое

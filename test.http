@@ -1,4 +1,14 @@
-POST http://localhost:4000/devices HTTP/1.1
+### 1 - Получение списка устройств ##
+GET http://172.16.9.218:49160/devices HTTP/1.1
+
+###  Получение списка комнат ##
+GET http://172.16.9.218:49160/rooms HTTP/1.1
+
+###  Получение всего конфига ##
+GET http://172.16.9.218:49160/config HTTP/1.1
+
+### 2 - Без Заголовка авторизации "status": "Not permitted" ##
+POST http://172.16.9.218:49160/devices HTTP/1.1
 content-type: application/json
 
 {
@@ -6,26 +16,84 @@ content-type: application/json
     "roomName": "Кухня"
 }
 
-###
-DELETE  http://localhost:4000/devices?id=IRC10001 HTTP/1.1
+### 2 - Добавление устройства ##
+POST http://172.16.9.218:49160/devices HTTP/1.1
 content-type: application/json
-
-
-
-###
-POST http://localhost:4000/devices HTTP/1.1
-content-type: application/json
+Authorization: "ADMIN0.07430079226865405"
 
 {
-    "id": "GTS-1754",
+    "id": "IPC-1159",
     "roomName": "Кухня"
 }
 
+### 3 - Удаление устройства ##
+DELETE  http://172.16.9.218:49160/devices?id=THS-000011 HTTP/1.1
+content-type: application/json
+
+
+
 ###
-POST http://localhost:4000/devices HTTP/1.1
+POST http://172.16.9.218:49160/devices HTTP/1.1
 content-type: application/json
 
 {
     "id": "EL C10003",
     "roomName": "Кухня"
 }
+
+### 4 - авторизация (Выдает токен) ###
+POST  http://172.16.9.218:49160/auth HTTP/1.1
+content-type: application/json
+
+{
+    "login": "admin",
+    "password": "password123"
+}
+
+###  5 - Выдает информацию о пользователях ###
+GET http://172.16.9.218:49160/users HTTP/1.1
+
+###
+POST http://172.16.9.218:49160/users HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Ivan 2",
+    "role": "user",
+    "login": "ivan",
+    "password": "ivan",
+}
+
+### 6 - Выдает сохраненную информацию в OpenSearch ###
+GET http://172.16.9.218:49160/mqtt HTTP/1.1
+
+### 7 - Добавляет payload в OpenSearch ###
+POST http://172.16.9.218:49160/sendToMqtt HTTP/1.1
+content-type: application/json
+
+{
+    "topic": "testevice",
+    "payload": "Good Evening 2"
+}
+
+###
+GET http://localhost:9200/_cat/indices HTTP/1.1
+
+### 
+GET http://172.16.9.218:9200/tind/_search HTTP/1.1
+
+###
+PUT http://localhost:9200/tind/_doc/2
+content-type: application/json
+
+{ "A JSON": "document" }
+
+###
+POST http://localhost:9200/tind/_doc
+content-type: application/json
+
+{
+    "topic": "MANUAL testevice",
+    "payload": "MANUAL hello"
+}
+ 

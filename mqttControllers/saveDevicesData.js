@@ -14,9 +14,15 @@ function saveDevicesData(topic, payload) {
 
 function saveToElastic(eindex, data) {
   // const url = new URL(`http://192.168.0.28:9200/${eindex}/_doc`)
+  // const url = new URL(`http://192.168.0.28:9200/${eindex}/_doc`)
+
   console.log("sending to elastic", eindex, data);
   try {
-    fetch(`http://192.168.0.28:9200/${eindex}/_doc`, {
+    // `http://192.168.0.28:9200/${eindex}/_doc`
+    // fetch("http://opensearch-node1:9200/tind/_search").then((res) => {
+    //   console.log(res);
+    // });
+    fetch(`http://opensearch-node1:9200/tind/_doc`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -24,7 +30,9 @@ function saveToElastic(eindex, data) {
       },
       body: JSON.stringify(data),
     });
-  } catch (e) {}
+  } catch (e) {
+    return e;
+  }
 }
 
 function saveToNeDB(eindex, data) {
@@ -33,4 +41,4 @@ function saveToNeDB(eindex, data) {
   database.insert({ eindex, data });
 }
 
-export { saveDevicesData };
+export { saveDevicesData, saveToElastic };
