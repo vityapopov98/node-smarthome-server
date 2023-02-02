@@ -1,15 +1,15 @@
-import { initRoomsObserver, observeRoomsState } from "./roomsMqttClients.js";
-import { saveDevicesData } from "./saveDevicesData.js";
-import { sendConnectedDevicesToHub } from "../devices/hub.js";
-import { ThermostatDemo } from "../devices/thermostatDemo.js";
-import { GatesDemo } from "../devices/gatesDemo.js";
+// import { initRoomsObserver, observeRoomsState } from "./roomsMqttClients.js";
+// import { saveDevicesData } from "./saveDevicesData.js";
+// import { sendConnectedDevicesToHub } from "../devices/hub.js";
+// import { ThermostatDemo } from "../devices/thermostatDemo.js";
+// import { GatesDemo } from "../devices/gatesDemo.js";
 
 export default (aedes, client) => {
   console.log("Aedes is working");
   initRoomsObserver();
-  const demoThermostat = new ThermostatDemo("THS16001", aedes);
-  demoThermostat.loop();
-  const demoGates = new GatesDemo("GTS00000", aedes);
+  // const demoThermostat = new ThermostatDemo("THS16001", aedes);
+  // demoThermostat.loop();
+  // const demoGates = new GatesDemo("GTS00000", aedes);
 
   //------ Соединение с интернет брокером ------
   client.on("connect", () => {
@@ -49,12 +49,12 @@ export default (aedes, client) => {
     if (client) {
       // console.log(packet)
 
-      observeRoomsState(packet.topic, packet.payload.toString());
-      saveDevicesData(packet.topic, packet.payload.toString());
+      // observeRoomsState(packet.topic, packet.payload.toString());
+      // saveDevicesData(packet.topic, packet.payload.toString());
       //-------- по сути не нужно --------
       if (packet.payload.toString() != "") {
-        demoThermostat.setState(packet.payload.toString());
-        demoGates.setState(packet.payload.toString());
+        // demoThermostat.setState(packet.payload.toString());
+        // demoGates.setState(packet.payload.toString());
         //если поле данных не пустое
         console.log(
           packet.topic,
@@ -64,33 +64,33 @@ export default (aedes, client) => {
         );
 
         //Разбор данных от термостата
-        try {
-          if (packet.payload.length === 17) {
-            const t1 = packet.payload.slice(0, 4).readFloatLE(0);
-            const t2 = packet.payload.slice(4, 8).readFloatLE(0);
-            console.log(packet.payload.slice(0, 4).readFloatLE(0));
-            console.log(packet.payload.slice(4, 8).readFloatLE(0));
-            console.log(packet.payload.slice(8, 10).readUInt16LE(0));
-            console.log(packet.payload.slice(10, 12).readUInt16LE(0));
-            console.log(packet.payload.slice(12, 13).readUInt8(0));
-            console.log(packet.payload.slice(13, 14).readUInt8(0));
-            console.log(packet.payload.slice(14, 15).readUInt8(0));
-            console.log(packet.payload.slice(15, 16).readUInt8(0));
-            console.log(packet.payload.slice(16, 17).readUInt8(0));
-            //THS16001 23.09 23.34 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0;
-            // aedes.publish({
-            //   cmd: "publish",
-            //   qos: 2,
-            //   topic: `THS16001/state`,
-            //   payload: Buffer.from(
-            //     `THS16001 ${t1} ${t2} 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0`
-            //   ),
-            //   retain: false,
-            // });
-          }
-        } catch (error) {
-          console.log(error);
-        }
+        // try {
+        //   if (packet.payload.length === 17) {
+        //     const t1 = packet.payload.slice(0, 4).readFloatLE(0);
+        //     const t2 = packet.payload.slice(4, 8).readFloatLE(0);
+        //     console.log(packet.payload.slice(0, 4).readFloatLE(0));
+        //     console.log(packet.payload.slice(4, 8).readFloatLE(0));
+        //     console.log(packet.payload.slice(8, 10).readUInt16LE(0));
+        //     console.log(packet.payload.slice(10, 12).readUInt16LE(0));
+        //     console.log(packet.payload.slice(12, 13).readUInt8(0));
+        //     console.log(packet.payload.slice(13, 14).readUInt8(0));
+        //     console.log(packet.payload.slice(14, 15).readUInt8(0));
+        //     console.log(packet.payload.slice(15, 16).readUInt8(0));
+        //     console.log(packet.payload.slice(16, 17).readUInt8(0));
+        //     //THS16001 23.09 23.34 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0;
+        //     // aedes.publish({
+        //     //   cmd: "publish",
+        //     //   qos: 2,
+        //     //   topic: `THS16001/state`,
+        //     //   payload: Buffer.from(
+        //     //     `THS16001 ${t1} ${t2} 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0`
+        //     //   ),
+        //     //   retain: false,
+        //     // });
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        // }
       }
       //-------- конец не нужного ------
     }
@@ -100,12 +100,12 @@ export default (aedes, client) => {
     //когда кто-то подписывается на какой-то топик
     if (client) {
       console.log("subscribe from client", subscriptions, client.id);
-      const diveceId = subscriptions[0].topic.substring(0, 8);
+      // const diveceId = subscriptions[0].topic.substring(0, 8);
       //Если это шлюз подклбчился, то передаем ему списко устройсв
-      if (diveceId.substring(0, 3) === "ULN") {
-        sendConnectedDevicesToHub(diveceId, aedes);
-      }
-      demoGates.state();
+      // if (diveceId.substring(0, 3) === "ULN") {
+      //   sendConnectedDevicesToHub(diveceId, aedes);
+      // }
+      // demoGates.state();
 
       //Если приложение подписалось на термостат THS/state
       // if (subscriptions[0].topic.substring(0, 3) === "THS") {
@@ -128,22 +128,22 @@ export default (aedes, client) => {
   });
 };
 
-function toArrayBuffer(buffer) {
-  var ab = new ArrayBuffer(buffer.length);
-  var view = new Uint8Array(ab);
-  for (var i = 0; i < buffer.length; ++i) {
-    view[i] = buffer[i];
-  }
-  return ab;
-}
+// function toArrayBuffer(buffer) {
+//   var ab = new ArrayBuffer(buffer.length);
+//   var view = new Uint8Array(ab);
+//   for (var i = 0; i < buffer.length; ++i) {
+//     view[i] = buffer[i];
+//   }
+//   return ab;
+// }
 
-// From ArrayBuffer to Buffer:
+// // From ArrayBuffer to Buffer:
 
-function toBuffer(ab) {
-  var buffer = new Buffer(ab.byteLength);
-  var view = new Uint8Array(ab);
-  for (var i = 0; i < buffer.length; ++i) {
-    buffer[i] = view[i];
-  }
-  return buffer;
-}
+// function toBuffer(ab) {
+//   var buffer = new Buffer(ab.byteLength);
+//   var view = new Uint8Array(ab);
+//   for (var i = 0; i < buffer.length; ++i) {
+//     buffer[i] = view[i];
+//   }
+//   return buffer;
+// }

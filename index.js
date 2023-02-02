@@ -16,27 +16,31 @@ const httpServer = httpServerI.createServer();
 import ws from "websocket-stream";
 
 const port = 1883;
-const wsPort = 8888;
+const wsPort = 8889;
 
 // //----------- Run Express server --------------
 // //----------------------------------------------------
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log("express on 3000");
+  console.log("express on 4000");
 });
 
-app.use(express.static("client/dist"));
-app.use(express.static("/configs"));
+// app.use(express.static("client/dist"));
+// app.use(express.static("/configs"));
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-  // res.send('hello my dear')
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/index.html");
+//   // res.send('hello my dear')
+// });
+
+// ---------MQTT Client (Bridge To Inet)--------
+import mqtt from "mqtt";
+const client = mqtt.connect({});
 
 //----------MQTT------------
 import aedesEventHandler from "./mqttControllers/aedesEventHandler.js";
 import routes from "./routes/index.js";
-const ApiRouter = routes(app, aedes);
+const ApiRouter = routes(app, aedes, client);
 
 server.listen(port, function () {
   console.log("server listening on port", port);
@@ -48,15 +52,6 @@ ws.createServer(
   },
   aedes.handle
 ); //запуск брокера
-
-// ---------MQTT Client (Bridge To Inet)--------
-import mqtt from "mqtt";
-const client = mqtt.connect({
-  host: "m5.wqtt.ru",
-  port: "4600",
-  username: "",
-  password: "",
-});
 
 //--------NeDB---------
 import Datastore from "nedb";

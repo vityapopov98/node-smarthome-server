@@ -1,16 +1,16 @@
-import fs from 'fs'
+// import fs from 'fs'
 
-const homeConfig = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+// const homeConfig = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
-function getHome(req, res) {
-    res.json({home: homeConfig.home})
-}
+// function getHome(req, res) {
+//     res.json({home: homeConfig.home})
+// }
 
-function putHome(req, res) {
-    
-}
+// function putHome(req, res) {
 
-export {
-    getHome,
-    putHome
-}
+// }
+
+// export {
+//     getHome,
+//     putHome
+// }
