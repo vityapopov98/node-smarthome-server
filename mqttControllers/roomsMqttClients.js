@@ -31,7 +31,7 @@ function initRoomsObserver() {
   homeConfig.home.rooms.forEach((room) => {
     rooms.push(new Room(room.id, room.name, room.devices));
   });
-  console.log("init rooms observer", rooms);
+  //console.log("init rooms observer", rooms);
 }
 function observeRoomsState(topic, payload) {
   //считываем с конфига все комнаты в массив
@@ -58,14 +58,14 @@ function observeRoomsState(topic, payload) {
   rooms.forEach((room) => {
     for (let i = 0; i < room.devices.length; i++) {
       if (`${room.devices[i].id}/state` === topic) {
-        console.log("device id topic", `${room.devices[i].id}/state`, topic);
+        //console.log("device id topic", `${room.devices[i].id}/state`, topic);
         matchedRooms.push(room);
       } else {
-        console.log("device id topic", `${room.devices[i].id}/state`, topic);
+        // console.log("device id topic", `${room.devices[i].id}/state`, topic);
       }
     }
   });
-  console.log("rooms observer matchedRooms", matchedRooms);
+  //console.log("rooms observer matchedRooms", matchedRooms);
   if (matchedRooms) {
     matchedRooms.forEach((room) => {
       room.setState(topic, payload);

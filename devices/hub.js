@@ -38,30 +38,55 @@ function deviceIdToByte(deviceId) {
   const binByte = [
     ...types[`${deviceId.substring(0, 3)}`],
     ...toBin[`${deviceId.substring(6, 8)}`],
+    //...toBin[`${deviceId.substring(3, 5)}`],
   ].join("");
-  console.log("bin", binByte);
-  console.log("binary int", parseInt(binByte, 2));
-  console.log("bin buffer", Buffer.from([parseInt(binByte, 2)]));
-  return new Buffer.from([parseInt(binByte, 2)]);
+  // console.log("bin", binByte);
+  // console.log("binary int", parseInt(binByte, 2));
+  // console.log("bin buffer", Buffer.from([parseInt(binByte, 2)]));
+
+  //return new Buffer.from([parseInt(binByte, 2)]); //Работает
+  return parseInt(binByte, 2);
 }
 
 function sendConnectedDevicesToHub(hubId, aedes) {
   console.log(hubId);
-  let hubInfo = "";
+  // let hubInfo = "";
+  // homeConfig.home.rooms.forEach((room) => {
+  //   room.devices.forEach((device) => {
+  //     if (device.id === hubId) {
+  //       hubInfo = device.connectedDevices;
+  //     }
+  //   });
+  // });
+
+  // console.log("sending", `${hubId}/setState`, deviceIdToByte(hubInfo));
+  // aedes.publish({
+  //   cmd: "publish",
+  //   qos: 2,
+  //   topic: `${hubId}/setState`,
+  //   payload: deviceIdToByte(hubInfo),
+  //   retain: false,
+  // });
+
+  let hubInfo = [];
   homeConfig.home.rooms.forEach((room) => {
     room.devices.forEach((device) => {
       if (device.id === hubId) {
-        hubInfo = device.connectedDevices;
+        console.log("passing", device.connectedDevices);
+        hubInfo.push(...device.connectedDevices);
       }
     });
   });
 
-  console.log("sending", `${hubId}/setState`, deviceIdToByte(hubInfo));
+  const arrayOfDevices = hubInfo.map((device) => {
+    return deviceIdToByte(device);
+  });
+  console.log("array buffer", arrayOfDevices);
   aedes.publish({
     cmd: "publish",
     qos: 2,
     topic: `${hubId}/setState`,
-    payload: deviceIdToByte(hubInfo),
+    payload: Buffer.from([...arrayOfDevices]),
     retain: false,
   });
 }

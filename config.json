@@ -65,7 +65,7 @@
             "id": "ULN10001",
             "name": "Шлюз",
             "type": "ULN",
-            "connectedDevices": "THS16001"
+            "connectedDevices": ["THS16001", "ECO16001", "WAC10003", "ECO16001"]
           }
         ]
       },
