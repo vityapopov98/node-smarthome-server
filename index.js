@@ -52,8 +52,8 @@ ws.createServer(
 // ---------MQTT Client (Bridge To Inet)--------
 import mqtt from "mqtt";
 const client = mqtt.connect({
-  host: "m5.wqtt.ru",
-  port: "4600",
+  host: "",
+  port: "",
   username: "",
   password: "",
 });

@@ -3,13 +3,14 @@ import { saveDevicesData, saveToElastic } from "./saveDevicesData.js";
 import { sendConnectedDevicesToHub } from "../devices/hub.js";
 import { ThermostatDemo } from "../devices/thermostatDemo.js";
 import { GatesDemo } from "../devices/gatesDemo.js";
+import { SHAutomation } from "../services/shAutomation.js";
 
 export default (aedes, client) => {
   console.log("Aedes is working");
-  initRoomsObserver();
-  const demoThermostat = new ThermostatDemo("THS16001", aedes);
-  demoThermostat.loop();
-  const demoGates = new GatesDemo("GTS00000", aedes);
+  // initRoomsObserver();
+  // const demoThermostat = new ThermostatDemo("THS16001", aedes);
+  // demoThermostat.loop();
+  // const demoGates = new GatesDemo("GTS00000", aedes);
 
   //------ Соединение с интернет брокером ------
   client.on("connect", () => {
@@ -33,6 +34,7 @@ export default (aedes, client) => {
       payload: Buffer.from(message.toString()),
       retain: false,
     });
+    SHAutomation(topic, message.toString(), aedes);
   });
   //--------------------------------------------
 
@@ -49,53 +51,54 @@ export default (aedes, client) => {
     if (client) {
       console.log(packet);
 
-      observeRoomsState(packet.topic, packet.payload.toString());
+      // observeRoomsState(packet.topic, packet.payload.toString());
       saveDevicesData(packet.topic, packet.payload.toString());
-      const e = saveToElastic(packet.topic, {
-        data: packet.payload.toString(),
-      });
-      console.log("возможная ошибка:", e);
-      //-------- по сути не нужно --------
-      if (packet.payload.toString() != "") {
-        demoThermostat.setState(packet.payload.toString());
-        demoGates.setState(packet.payload.toString());
-        //если поле данных не пустое
-        console.log(
-          packet.topic,
-          packet.payload.toString(),
-          packet.payload,
-          packet.payload.length
-        );
+      SHAutomation(packet.topic, packet.payload.toString(), aedes);
+      // const e = saveToElastic(packet.topic, {
+      //   data: packet.payload.toString(),
+      // });
 
-        //Разбор данных от термостата
-        try {
-          if (packet.payload.length === 17) {
-            const t1 = packet.payload.slice(0, 4).readFloatLE(0);
-            const t2 = packet.payload.slice(4, 8).readFloatLE(0);
-            console.log(packet.payload.slice(0, 4).readFloatLE(0));
-            console.log(packet.payload.slice(4, 8).readFloatLE(0));
-            console.log(packet.payload.slice(8, 10).readUInt16LE(0));
-            console.log(packet.payload.slice(10, 12).readUInt16LE(0));
-            console.log(packet.payload.slice(12, 13).readUInt8(0));
-            console.log(packet.payload.slice(13, 14).readUInt8(0));
-            console.log(packet.payload.slice(14, 15).readUInt8(0));
-            console.log(packet.payload.slice(15, 16).readUInt8(0));
-            console.log(packet.payload.slice(16, 17).readUInt8(0));
-            //THS16001 23.09 23.34 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0;
-            // aedes.publish({
-            //   cmd: "publish",
-            //   qos: 2,
-            //   topic: `THS16001/state`,
-            //   payload: Buffer.from(
-            //     `THS16001 ${t1} ${t2} 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0`
-            //   ),
-            //   retain: false,
-            // });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
+      //-------- по сути не нужно --------
+      // if (packet.payload.toString() != "") {
+      //   demoThermostat.setState(packet.payload.toString());
+      //   demoGates.setState(packet.payload.toString());
+      //   //если поле данных не пустое
+      //   console.log(
+      //     packet.topic,
+      //     packet.payload.toString(),
+      //     packet.payload,
+      //     packet.payload.length
+      //   );
+
+      //   //Разбор данных от термостата
+      //   try {
+      //     if (packet.payload.length === 17) {
+      //       const t1 = packet.payload.slice(0, 4).readFloatLE(0);
+      //       const t2 = packet.payload.slice(4, 8).readFloatLE(0);
+      //       console.log(packet.payload.slice(0, 4).readFloatLE(0));
+      //       console.log(packet.payload.slice(4, 8).readFloatLE(0));
+      //       console.log(packet.payload.slice(8, 10).readUInt16LE(0));
+      //       console.log(packet.payload.slice(10, 12).readUInt16LE(0));
+      //       console.log(packet.payload.slice(12, 13).readUInt8(0));
+      //       console.log(packet.payload.slice(13, 14).readUInt8(0));
+      //       console.log(packet.payload.slice(14, 15).readUInt8(0));
+      //       console.log(packet.payload.slice(15, 16).readUInt8(0));
+      //       console.log(packet.payload.slice(16, 17).readUInt8(0));
+      //       //THS16001 23.09 23.34 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0;
+      //       // aedes.publish({
+      //       //   cmd: "publish",
+      //       //   qos: 2,
+      //       //   topic: `THS16001/state`,
+      //       //   payload: Buffer.from(
+      //       //     `THS16001 ${t1} ${t2} 19.23 0.00 1 22 10 3 0 5 0 0 0 0 0 0`
+      //       //   ),
+      //       //   retain: false,
+      //       // });
+      //     }
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // }
       //-------- конец не нужного ------
     }
   });
@@ -109,7 +112,7 @@ export default (aedes, client) => {
       if (diveceId.substring(0, 3) === "ULN") {
         sendConnectedDevicesToHub(diveceId, aedes);
       }
-      demoGates.state();
+      // demoGates.state();
 
       //Если приложение подписалось на термостат THS/state
       // if (subscriptions[0].topic.substring(0, 3) === "THS") {
