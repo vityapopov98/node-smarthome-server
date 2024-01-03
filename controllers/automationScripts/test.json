@@ -1,0 +1,24 @@
+{
+  "name": "Включение света по одному выключателю",
+  "isEnabled": true,
+  "automationConditions": [
+    {
+      "firstOperandTopic": "SWH10001/state",
+      "operator": "=",
+      "comparisonValue": "1"
+    }
+  ],
+  "operatorsBetweenConditions": [],
+  "actions": [
+    {
+      "topic": "SWH10002/setState",
+      "payload": "L:1;",
+      "schedule": "30.12.23 10:28"
+    },
+    {
+      "topic": "SWH10003/setState",
+      "payload": "L:1;",
+      "delay": 123546
+    }
+  ]
+}

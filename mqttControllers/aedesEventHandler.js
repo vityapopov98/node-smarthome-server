@@ -5,7 +5,7 @@ import { ThermostatDemo } from "../devices/thermostatDemo.js";
 import { GatesDemo } from "../devices/gatesDemo.js";
 import { SHAutomation } from "../services/shAutomation.js";
 
-export default (aedes, client) => {
+export default (aedes, clientWqtt) => {
   console.log("Aedes is working");
   // initRoomsObserver();
   // const demoThermostat = new ThermostatDemo("THS16001", aedes);
@@ -13,10 +13,10 @@ export default (aedes, client) => {
   // const demoGates = new GatesDemo("GTS00000", aedes);
 
   //------ Соединение с интернет брокером ------
-  client.on("connect", () => {
-    client.subscribe("#", (err) => {
+  clientWqtt.on("connect", () => {
+    clientWqtt.subscribe("#", (err) => {
       if (!err) {
-        client.publish("/wq", "hello from local server");
+        clientWqtt.publish("/wq", "hello from local server");
         console.log("server published to inet");
       } else {
         console.log("server dont published to inet");
@@ -24,7 +24,7 @@ export default (aedes, client) => {
     });
   });
 
-  client.on("message", (topic, message) => {
+  clientWqtt.on("message", (topic, message) => {
     console.log("message from Wqtt", topic, message.toString());
     //client.publish("THS16001/setState", "hello from local server");
     aedes.publish({
@@ -50,7 +50,7 @@ export default (aedes, client) => {
     //Когда кто-то публикует данные в какой-то топик
     if (client) {
       console.log(packet);
-
+      clientWqtt.publish(packet.topic, packet.payload.toString());
       // observeRoomsState(packet.topic, packet.payload.toString());
       saveDevicesData(packet.topic, packet.payload.toString());
       SHAutomation(packet.topic, packet.payload.toString(), aedes);

@@ -1,4 +1,36 @@
 export const SHAutomation = (topic, payload, aedes) => {
+  if (topic === "SWH10001/state" && payload === "1") {
+    doActions([
+      {
+        topic: "SWH10002/setState",
+        payload: "L:0;",
+      },
+      {
+        topic: "SWH10002/setState",
+        payload: "L:0;",
+      },
+    ]);
+  }
+
+  // задержка('SWH10 00 1', '20m', '0')
+  // дата('SWH10001', '12.01.23 10:34', '1')
+
+  /* 
+  SWH10001/setState/L
+  1
+  SWH10001/setState/R
+  1
+
+  SWH10001/state/L
+  1
+
+  SWH10001/setState
+  L:1;
+
+  SWH10001/state
+  SWH10001 1 1 0;
+  */
+
   const automations = [
     {
       name: "Включение света по одному выключателю",
@@ -13,6 +45,30 @@ export const SHAutomation = (topic, payload, aedes) => {
         {
           topic: "SWH10002/setState",
           payload: "L:1;",
+        },
+        {
+          topic: "SWH10003/setState",
+          payload: "L:1;",
+        },
+      ],
+    },
+    {
+      name: "Выключение света по одному выключателю",
+      automationConditions: [
+        {
+          firstOperandTopic: "SWH10001/setState",
+          operator: "=",
+          comparisonValue: "L:0;",
+        },
+      ],
+      actions: [
+        {
+          topic: "SWH10002/setState",
+          payload: "L:0;",
+        },
+        {
+          topic: "SWH10003/setState",
+          payload: "L:0;",
         },
       ],
     },
