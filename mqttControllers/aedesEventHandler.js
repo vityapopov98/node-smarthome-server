@@ -4,6 +4,7 @@ import { sendConnectedDevicesToHub } from "../devices/hub.js";
 import { ThermostatDemo } from "../devices/thermostatDemo.js";
 import { GatesDemo } from "../devices/gatesDemo.js";
 import { SHAutomation } from "../services/shAutomation.js";
+import { mqttUpdate } from "../services/shBot.js";
 
 export default (aedes, clientWqtt) => {
   console.log("Aedes is working");
@@ -35,6 +36,7 @@ export default (aedes, clientWqtt) => {
       retain: false,
     });
     SHAutomation(topic, message.toString(), aedes);
+    mqttUpdate(topic, message.toString());
   });
   //--------------------------------------------
 
@@ -54,6 +56,7 @@ export default (aedes, clientWqtt) => {
       // observeRoomsState(packet.topic, packet.payload.toString());
       saveDevicesData(packet.topic, packet.payload.toString());
       SHAutomation(packet.topic, packet.payload.toString(), aedes);
+      mqttUpdate(packet.topic, packet.payload.toString());
       // const e = saveToElastic(packet.topic, {
       //   data: packet.payload.toString(),
       // });

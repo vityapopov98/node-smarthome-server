@@ -20,9 +20,9 @@ const wsPort = 8888;
 
 // //----------- Run Express server --------------
 // //----------------------------------------------------
-const PORT = process.env.PORT || 4000;
+const PORT = 4000;
 app.listen(PORT, () => {
-  console.log("express on 3000");
+  console.log("express on 4000");
 });
 
 app.use(express.static("client/dist"));
@@ -52,10 +52,10 @@ ws.createServer(
 // ---------MQTT Client (Bridge To Inet)--------
 import mqtt from "mqtt";
 const client = mqtt.connect({
-  host: "",
-  port: "",
-  username: "",
-  password: "",
+  host: process.env.WQTT_HOST,
+  port: process.env.WQTT_PORT,
+  username: process.env.WQTT_USERNAME,
+  password: process.env.WQTT_PASSWORD,
 });
 
 //--------NeDB---------
